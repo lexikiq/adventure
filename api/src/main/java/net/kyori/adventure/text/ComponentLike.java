@@ -24,6 +24,7 @@
 package net.kyori.adventure.text;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.Contract;
 
 /**
@@ -33,6 +34,17 @@ import org.jetbrains.annotations.Contract;
  */
 @FunctionalInterface
 public interface ComponentLike {
+  /**
+   * Fetches a {@link Component} from a {@code ComponentLike}.
+   *
+   * @param like the component-like
+   * @return a component, or {@code null}
+   * @since 4.8.0
+   */
+  static @Nullable Component unbox(final @Nullable ComponentLike like) {
+    return like != null ? like.asComponent() : null;
+  }
+
   /**
    * Gets a {@link Component} representation.
    *

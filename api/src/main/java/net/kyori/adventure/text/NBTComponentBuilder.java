@@ -24,6 +24,7 @@
 package net.kyori.adventure.text;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.Contract;
 
 /*
@@ -55,4 +56,14 @@ public interface NBTComponentBuilder<C extends NBTComponent<C, B>, B extends NBT
    */
   @Contract("_ -> this")
   @NonNull B interpret(final boolean interpret);
+
+  /**
+   * Sets the separator.
+   *
+   * @param separator the separator
+   * @return this builder
+   * @since 4.8.0
+   */
+  @Contract("_ -> this")
+  @NonNull B separator(final @Nullable ComponentLike separator);
 }
