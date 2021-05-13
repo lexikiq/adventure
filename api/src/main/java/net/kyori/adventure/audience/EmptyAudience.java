@@ -23,6 +23,7 @@
  */
 package net.kyori.adventure.audience;
 
+import java.util.function.Consumer;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.ComponentLike;
@@ -31,6 +32,10 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 final class EmptyAudience implements Audience {
   static final EmptyAudience INSTANCE = new EmptyAudience();
+
+  @Override
+  public void forEachAudience(final @NonNull Consumer<? super Audience> action) {
+  }
 
   @Override
   public void sendMessage(final @NonNull ComponentLike message) {

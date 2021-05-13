@@ -25,9 +25,9 @@ package net.kyori.adventure.audience;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collector;
 import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.sound.Sound;
@@ -35,6 +35,7 @@ import net.kyori.adventure.sound.SoundStop;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.title.Title;
+import net.kyori.adventure.identity.Identified;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -135,6 +136,21 @@ public interface Audience {
   }
 
   /**
+   * Filters this audience.
+   *
+   * <p>The returned {@code Audience} may be the same, or a completely different one.</p>
+   *
+   * @param filter the filter
+   * @since 4.8.0
+   */
+  default @NonNull Audience filterAudience(final @NonNull Predicate<? super Audience> filter) {
+    if(filter.test(this)) {
+      return this;
+    }
+    return empty();
+  }
+
+  /**
    * Executes an action against all audiences.
    *
    * <p>If you implement {@code Audience} and not {@link ForwardingAudience} in your own code, and your audience forwards to
@@ -143,7 +159,7 @@ public interface Audience {
    * @param action the action
    * @since 4.8.0
    */
-  default void foreach(final @NonNull Consumer<? super Audience> action) {
+  default void forEachAudience(final @NonNull Consumer<? super Audience> action) {
     action.accept(this);
   }
 

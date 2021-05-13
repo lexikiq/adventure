@@ -24,10 +24,12 @@
 package net.kyori.adventure.audience;
 
 import com.google.common.testing.EqualsTester;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -50,6 +52,33 @@ class AudienceTest {
     final Audience ma = Audience.audience(a0, a1);
     assertTrue(ma instanceof ForwardingAudience);
     assertThat(((ForwardingAudience) ma).audiences()).containsExactly(a0, a1).inOrder();
+  }
+
+  @Test
+  void testForEachAudienceEmpty() {
+    final AtomicInteger touched = new AtomicInteger(0);
+    Audience.empty().forEachAudience(audience -> touched.incrementAndGet());
+    assertEquals(0, touched.get());
+  }
+
+  @Test
+  void testForEachAudienceForwarded() {
+    final AtomicInteger touched = new AtomicInteger(0);
+    Audience.audience(
+      new Audience() {
+      }
+    ).forEachAudience(audience -> touched.incrementAndGet());
+    assertEquals(1, touched.get());
+  }
+
+  @Test
+  void testForEachAudienceForwardedOfEmpty() {
+    final AtomicInteger touched = new AtomicInteger(0);
+    Audience.audience(
+      Audience.empty(),
+      Audience.empty()
+    ).forEachAudience(audience -> touched.incrementAndGet());
+    assertEquals(0, touched.get());
   }
 
   @Test
