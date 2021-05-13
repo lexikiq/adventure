@@ -24,6 +24,7 @@
 package net.kyori.adventure.audience;
 
 import java.util.Collections;
+import java.util.function.Consumer;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
@@ -54,6 +55,11 @@ public interface ForwardingAudience extends Audience {
    */
   @ApiStatus.OverrideOnly
   @NonNull Iterable<? extends Audience> audiences();
+
+  @Override
+  default void foreach(final @NonNull Consumer<? super Audience> action) {
+    for(final Audience audience : this.audiences()) audience.foreach(action);
+  }
 
   @Override
   default void sendMessage(final @NonNull Identified source, final @NonNull Component message, final @NonNull MessageType type) {
@@ -155,6 +161,11 @@ public interface ForwardingAudience extends Audience {
     @Override
     default @NonNull Iterable<? extends Audience> audiences() {
       return Collections.singleton(this.audience());
+    }
+
+    @Override
+    default void foreach(final @NonNull Consumer<? super Audience> action) {
+      this.audience().foreach(action);
     }
 
     @Override
