@@ -77,6 +77,17 @@ public enum TextDecoration implements StyleBuilderApplicable, TextFormat {
     this.name = name;
   }
 
+  /**
+   * Creates a {@link TextDecorationAndState}.
+   *
+   * @param state the state
+   * @return a {@link TextDecorationAndState}
+   * @since 4.8.0
+   */
+  public final @NonNull TextDecorationAndState as(final @NonNull State state) {
+    return new TextDecorationAndStateImpl(this, state);
+  }
+
   @Override
   public void styleApply(final Style.@NonNull Builder style) {
     style.decorate(this);

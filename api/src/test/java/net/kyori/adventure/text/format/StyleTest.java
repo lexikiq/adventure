@@ -88,6 +88,24 @@ class StyleTest {
   }
 
   @Test
+  void testOfTextDecorationAndState() {
+    final Style s0 = Style.style(
+      TextDecoration.BOLD.as(TextDecoration.State.TRUE),
+      TextDecoration.ITALIC.as(TextDecoration.State.FALSE)
+    );
+    assertDecorations(s0, ImmutableSet.of(TextDecoration.BOLD), ImmutableSet.of(TextDecoration.ITALIC));
+  }
+
+  @Test
+  void testOfTextDecorationAndStateOverridesWhenSame() {
+    final Style s0 = Style.style(
+      TextDecoration.BOLD.as(TextDecoration.State.TRUE),
+      TextDecoration.BOLD.as(TextDecoration.State.FALSE)
+    );
+    assertDecorations(s0, ImmutableSet.of(), ImmutableSet.of(TextDecoration.BOLD));
+  }
+
+  @Test
   void testOfColor() {
     assertSame(Style.empty(), Style.style((TextColor) null));
     assertEquals(NamedTextColor.GREEN, Style.style(NamedTextColor.GREEN).color());
